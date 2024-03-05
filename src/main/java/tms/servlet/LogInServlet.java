@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/PostgreSQLTask/login")
+@WebServlet("/login")
 public class LogInServlet extends HttpServlet {
     private final UserService service = UserService.getInstance();
 
@@ -30,7 +30,7 @@ public class LogInServlet extends HttpServlet {
             User user = byEmail.get();
             if (user.getPassword().equals(password)){
                 req.getSession().setAttribute("user", user);
-                resp.sendRedirect("/");
+                resp.sendRedirect("/PostgreSQLTask/");
             }else {
                 req.setAttribute("loginMessage","Wrong email or password");
                 getServletContext().getRequestDispatcher("/pages/login.jsp").forward(req, resp);

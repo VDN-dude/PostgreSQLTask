@@ -10,13 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/PostgreSQLTask/register")
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
     private final UserService service = UserService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getParameter("num1"));
         getServletContext().getRequestDispatcher("/pages/reg.jsp").forward(req, resp);
     }
 
@@ -36,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
 //        } else {
             User user = new User(firstName, lastName, age, email, password);
             service.save(user);
-            resp.sendRedirect("/");
+            resp.sendRedirect("/PostgreSQLTask/");
 //        }
     }
 }
