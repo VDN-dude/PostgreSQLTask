@@ -24,8 +24,8 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
-        int age = Integer.parseInt(req.getParameter("age"));
         String email = req.getParameter("email");
+        int age = Integer.parseInt(req.getParameter("age"));
         String password = req.getParameter("password");
 //        if (service.checkEmail(email)) {
 //            req.setAttribute("emailUsed", "this email already in used");

@@ -38,13 +38,8 @@
             </c:if>
         </div>
         <div class="mb-3">
-            <label for="Username" class="form-label">Username</label>
-            <input name="username" type="text" class="form-control" id="Username" required pattern="\w*">
-            <c:if test="${usernameUsed != null}">
-                <div class="alert alert-danger" role="alert">
-                        ${usernameUsed}
-                </div>
-            </c:if>
+            <label for="Age" class="form-label">Username</label>
+            <input name="age" type="number" class="form-control" id="Age" required pattern="\w*">
         </div>
         <div class="mb-3">
             <label for="Password" class="form-label">Password</label>

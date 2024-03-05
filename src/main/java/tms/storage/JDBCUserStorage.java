@@ -9,7 +9,7 @@ import java.util.Optional;
 public class JDBCUserStorage implements UserStorage{
     private static JDBCUserStorage instance;
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
-    private static final String WRITE_USER = "INSERT INTO users (firstname, lastname, email, username, password) VALUES (?, ?, ?, ?, ?)";
+    private static final String WRITE_USER = "INSERT INTO users (firstname, lastname, email, age, password) VALUES (?, ?, ?, ?, ?)";
 
     private JDBCUserStorage() {
 
