@@ -28,8 +28,4 @@ public class UserService{
     public boolean checkEmail(String email) {
         return storage.checkEmail(email);
     }
-
-    public boolean checkUsername(String username) {
-        return storage.checkUsername(username);
-    }
 }
