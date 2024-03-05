@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/register")
+@WebServlet("/PostgreSQLTask/register")
 public class RegisterServlet extends HttpServlet {
     private final UserService service = UserService.getInstance();
 

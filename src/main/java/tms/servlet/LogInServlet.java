@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/login")
+@WebServlet("/PostgreSQLTask/login")
 public class LogInServlet extends HttpServlet {
     private final UserService service = UserService.getInstance();
 
