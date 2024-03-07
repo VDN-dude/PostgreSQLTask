@@ -13,7 +13,7 @@
 <div class="container">
     <div class="container justify-content-center">
         <div class="row">
-            <c:if test="${!pageableUserList.userList.isEmpty()}">
+            <c:if test="${pageableUserList.userList.isEmpty()}">
                 <div class="row">
                     <div class="col-3 text-center">
                         <c:out value="Firstname"/>
