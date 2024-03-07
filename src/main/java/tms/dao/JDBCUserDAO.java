@@ -15,9 +15,7 @@ public class JDBCUserDAO implements UserDAO {
     private static final String SELECT_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String SELECT_PAGEABLE_USERS = "SELECT * FROM users LIMIT ? OFFSET ?";
     private static final String UPDATE = "UPDATE users SET firstname = ?, lastname = ?, age = ?, phone_number = ? WHERE id = ?";
-    private static final String INSERT = "INSERT INTO users (firstname, lastname, age, phone_number) VALUES (?, ?, ?, ?)";
     private static final String COUNT_ALL_USERS = "SELECT count(*) FROM users";
-    private static final String CHECK_USAGE_OF_PHONE_NUMBER = "SELECT u.id FROM users u WHERE phone_number = ?";
 
     private JDBCUserDAO() {
     }
@@ -31,23 +29,18 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public boolean save(User user) {
+
         boolean saved = false;
-
         try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_UNCOMMITTED);
-             PreparedStatement checkStatement = postgresConnection.prepareStatement(CHECK_USAGE_OF_PHONE_NUMBER);
-             PreparedStatement saveStatement = postgresConnection.prepareStatement(INSERT)) {
+             CallableStatement callableStatement = postgresConnection.prepareCall("call saveuser(?,?,?,?,?)")) {
 
-            checkStatement.setString(1, user.getPhoneNumber());
-            ResultSet resultSet = checkStatement.executeQuery();
-
-            if (!resultSet.next()) {
-                saveStatement.setString(1, user.getFirstname());
-                saveStatement.setString(2, user.getLastname());
-                saveStatement.setInt(3, user.getAge());
-                saveStatement.setString(4, user.getPhoneNumber());
-                saveStatement.execute();
-                saved = true;
-            }
+            callableStatement.setString(1, user.getFirstname());
+            callableStatement.setString(2, user.getLastname());
+            callableStatement.setInt(3, user.getAge());
+            callableStatement.setString(4, user.getPhoneNumber());
+            callableStatement.registerOutParameter(5, Types.BOOLEAN);
+            callableStatement.execute();
+            saved = callableStatement.getBoolean(5);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,7 +91,7 @@ public class JDBCUserDAO implements UserDAO {
     @Override
     public void modify(User user) {
         try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
-             PreparedStatement preparedStatement = postgresConnection.prepareStatement(UPDATE)) {
+             CallableStatement preparedStatement = postgresConnection.prepareCall(UPDATE)) {
 
             preparedStatement.setString(1, user.getFirstname());
             preparedStatement.setString(2, user.getLastname());
@@ -126,13 +119,13 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public long countAllUsers(){
+    public long countAllUsers() {
         long countOfUsers = 0;
         try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
              Statement statement = postgresConnection.createStatement()) {
 
             ResultSet resultSet2 = statement.executeQuery(COUNT_ALL_USERS);
-            if (resultSet2.next()){
+            if (resultSet2.next()) {
                 countOfUsers = resultSet2.getLong(1);
             }
 
@@ -151,7 +144,7 @@ public class JDBCUserDAO implements UserDAO {
         return new User(id, firstname, lastname, age, phoneNumber);
     }
 
-    private PageableUser createPageableUser(List<User> userList, int pageSize, double countUsers){
+    private PageableUser createPageableUser(List<User> userList, int pageSize, double countUsers) {
         PageableUser pageableUser = new PageableUser();
         pageableUser.setSize(pageSize);
         pageableUser.setUserList(userList);
