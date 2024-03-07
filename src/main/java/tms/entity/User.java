@@ -1,63 +1,74 @@
 package tms.entity;
 
 public class User {
-    private int id;
-    private final String firstName;
-    private final String lastName;
-    private final int age;
-    private final String email;
-    private final String password;
+    private long id;
+    private String firstname;
+    private String lastname;
+    private int age;
+    private String phoneNumber;
 
-    public User(String firstName, String lastName, int age, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String firstname, String lastname, int age, String phoneNumber) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.age = age;
-        this.email = email;
-        this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
-    public User(int id, String firstName, String lastName, int age, String email, String password) {
+    public User(long id, String firstname, String lastname, int age, String phoneNumber) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.age = age;
-        this.email = email;
-        this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
+    public User() {
+    }
+
+    public long getId() {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
     public int getAge() {
         return age;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", age='" + age + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }
