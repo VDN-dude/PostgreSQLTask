@@ -25,8 +25,15 @@ public class CreateUserServlet extends HttpServlet {
         String lastname = req.getParameter("lastname");
         int age = Integer.parseInt(req.getParameter("age"));
         String phoneNumber = req.getParameter("phoneNumber");
+
         RegUserDTO regUserDTO = new RegUserDTO(firstname, lastname, age, phoneNumber);
-        service.save(regUserDTO);
-        resp.sendRedirect("/");
+        boolean saved = service.save(regUserDTO);
+
+        if (saved){
+            resp.sendRedirect("/");
+        } else {
+            req.setAttribute("phoneUsed","The User has not been created. Phone number already in use");
+            getServletContext().getRequestDispatcher("/pages/create-user.jsp").forward(req, resp);
+        }
     }
 }

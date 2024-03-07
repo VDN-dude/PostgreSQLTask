@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Register</title>
@@ -30,6 +31,11 @@
                 <label for="PhoneNumber" class="form-label">Phone number</label>
                 <input name="phoneNumber" type="number" class="form-control" id="PhoneNumber" required pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$">
             </div>
+            <c:if test="${phoneUsed != null}">
+                <div class="alert alert-danger" role="alert">
+                    ${phoneUsed}
+                </div>
+            </c:if>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

@@ -17,6 +17,7 @@ public class JDBCUserDAO implements UserDAO {
     private static final String UPDATE = "UPDATE users SET firstname = ?, lastname = ?, age = ?, phone_number = ? WHERE id = ?";
     private static final String INSERT = "INSERT INTO users (firstname, lastname, age, phone_number) VALUES (?, ?, ?, ?)";
     private static final String COUNT_ALL_USERS = "SELECT count(*) FROM users";
+    private static final String CHECK_USAGE_OF_PHONE_NUMBER = "SELECT u.id FROM users u WHERE phone_number = ?";
 
     private JDBCUserDAO() {
     }
@@ -29,28 +30,35 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void save(User user) {
-        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection();
-             PreparedStatement preparedStatement = postgresConnection.prepareStatement(INSERT)) {
-            postgresConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+    public boolean save(User user) {
+        boolean saved = false;
 
-            preparedStatement.setString(1, user.getFirstname());
-            preparedStatement.setString(2, user.getLastname());
-            preparedStatement.setInt(3, user.getAge());
-            preparedStatement.setString(4, user.getPhoneNumber());
-            preparedStatement.execute();
+        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_UNCOMMITTED);
+             PreparedStatement checkStatement = postgresConnection.prepareStatement(CHECK_USAGE_OF_PHONE_NUMBER);
+             PreparedStatement saveStatement = postgresConnection.prepareStatement(INSERT)) {
 
+            checkStatement.setString(1, user.getPhoneNumber());
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                saveStatement.setString(1, user.getFirstname());
+                saveStatement.setString(2, user.getLastname());
+                saveStatement.setInt(3, user.getAge());
+                saveStatement.setString(4, user.getPhoneNumber());
+                saveStatement.execute();
+                saved = true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return saved;
     }
 
     @Override
     public Optional<PageableUser> findAll(int offset, int pageSize) {
         List<User> userList = new ArrayList<>();
-        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection();
+        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
              PreparedStatement preparedStatement = postgresConnection.prepareStatement(SELECT_PAGEABLE_USERS)) {
-            postgresConnection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             long countOfUsers = countAllUsers();
 
             preparedStatement.setInt(1, pageSize);
@@ -60,7 +68,8 @@ public class JDBCUserDAO implements UserDAO {
                 User user = buildUser(resultSet);
                 userList.add(user);
             }
-            return Optional.of(createPageableGoods(userList, pageSize, countOfUsers));
+            PageableUser pageableUser = createPageableUser(userList, pageSize, countOfUsers);
+            return Optional.of(pageableUser);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,9 +79,8 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public Optional<User> findById(long id) {
-        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection();
+        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
              PreparedStatement preparedStatement = postgresConnection.prepareStatement(SELECT_BY_ID)) {
-            postgresConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -89,7 +97,7 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public void modify(User user) {
-        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection();
+        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
              PreparedStatement preparedStatement = postgresConnection.prepareStatement(UPDATE)) {
 
             preparedStatement.setString(1, user.getFirstname());
@@ -106,9 +114,8 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public void delete(long id) {
-        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection();
+        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_UNCOMMITTED);
              PreparedStatement preparedStatement = postgresConnection.prepareStatement(DELETE_BY_ID)) {
-            postgresConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
@@ -118,16 +125,17 @@ public class JDBCUserDAO implements UserDAO {
         }
     }
 
-    private long countAllUsers(){
+    @Override
+    public long countAllUsers(){
         long countOfUsers = 0;
-        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection();
+        try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
              Statement statement = postgresConnection.createStatement()) {
-            postgresConnection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             ResultSet resultSet2 = statement.executeQuery(COUNT_ALL_USERS);
             if (resultSet2.next()){
                 countOfUsers = resultSet2.getLong(1);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -143,7 +151,7 @@ public class JDBCUserDAO implements UserDAO {
         return new User(id, firstname, lastname, age, phoneNumber);
     }
 
-    private PageableUser createPageableGoods(List<User> userList, int pageSize, double countUsers){
+    private PageableUser createPageableUser(List<User> userList, int pageSize, double countUsers){
         PageableUser pageableUser = new PageableUser();
         pageableUser.setSize(pageSize);
         pageableUser.setUserList(userList);

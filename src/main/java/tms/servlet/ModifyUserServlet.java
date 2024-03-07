@@ -24,7 +24,7 @@ public class ModifyUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         if (id == null || id.isEmpty()) {
-            System.out.println("empty");
+            req.setAttribute("notFound", "There isn't any id for search user, or user with this id isn't exist!");
         } else {
             Optional<User> byId = userService.findById(Long.parseLong(id));
             byId.ifPresent(user -> this.user = user);

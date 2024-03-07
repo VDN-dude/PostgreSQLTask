@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Register</title>
@@ -10,6 +11,10 @@
 <jsp:include page="header.jsp"/>
 
 <div class="container">
+    <c:if test="${notFound != null}">
+        <c:out value="${notFound}"/>
+    </c:if>
+    <c:if test="${notFound == null}">
     <form class="mt-3 needs-validation" action="/modify-user" method="post">
         <div class="row mb-3">
             <div class="col">
@@ -40,6 +45,7 @@
         <input type="hidden" name="id" value="${user.id}"/>
         <button type="submit" class="btn btn-danger align-self-center">delete</button>
     </form>
+    </c:if>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"

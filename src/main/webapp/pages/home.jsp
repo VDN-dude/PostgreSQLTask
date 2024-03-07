@@ -13,23 +13,24 @@
 <div class="container">
     <div class="container justify-content-center">
         <div class="row">
-            <c:out value="${itsEmpty}"/>
-            <div class="row">
-                <div class="col-3 text-center">
-                    <c:out value="Firstname"/>
+            <c:if test="${!pageableUserList.userList.isEmpty()}">
+                <div class="row">
+                    <div class="col-3 text-center">
+                        <c:out value="Firstname"/>
+                    </div>
+                    <div class="col-3 text-center">
+                        <c:out value="Lastname"/>
+                    </div>
+                    <div class="col-1 text-center">
+                        <c:out value="Age"/>
+                    </div>
+                    <div class="col-3 text-center">
+                        <c:out value="Phone Number"/>
+                    </div>
+                    <div class="col-2 text-center">
+                    </div>
                 </div>
-                <div class="col-3 text-center">
-                    <c:out value="Lastname"/>
-                </div>
-                <div class="col-1 text-center">
-                    <c:out value="Age"/>
-                </div>
-                <div class="col-3 text-center">
-                    <c:out value="Phone Number"/>
-                </div>
-                <div class="col-2 text-center">
-                </div>
-            </div>
+            </c:if>
             <ul class="mt-3" style="list-style-type: none">
                 <c:forEach items="${pageableUserList.userList}" var="user">
                     <li class="mt-2 border border-black">
@@ -53,7 +54,7 @@
                             </div>
                             <div class="col-1 text-center">
                                 <form class="mb-0" action="/delete-user" method="post">
-                                    <input type="hidden" name="id" value="${user.id}" />
+                                    <input type="hidden" name="id" value="${user.id}"/>
                                     <button type="submit" class="btn btn-danger align-self-center">delete</button>
                                 </form>
                             </div>

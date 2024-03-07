@@ -27,11 +27,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void save(RegUserDTO regUserDTO) {
-        System.out.println(regUserDTO);
+    public boolean save(RegUserDTO regUserDTO) {
         User user = userMapper.regUserDtoToUser(regUserDTO);
-        System.out.println(user);
-        userDAO.save(user);
+        return userDAO.save(user);
     }
 
     @Override

@@ -30,8 +30,6 @@ public class HomeServlet extends HttpServlet {
         if (pageableUser.isPresent()){
             req.setAttribute("pageableUserList", pageableUser.get());
             System.out.println(pageableUser.get().getCountOfPages());
-        } else {
-            req.setAttribute("itsEmpty", "Now there isn't any user");
         }
 
         req.getRequestDispatcher("/pages/home.jsp").forward(req, resp);

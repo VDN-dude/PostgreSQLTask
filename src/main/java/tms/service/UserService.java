@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
-    void save(RegUserDTO regUserDTO);
+    boolean save(RegUserDTO regUserDTO);
     Optional<PageableUser> findAll(int offset, int pageSize);
     Optional<User> findById(long id);
     boolean modify(User user, Map<String, String[]> parameterMap);
