@@ -8,11 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class JDBCUserDAO implements UserDAO {
-    private static Logger LOGGER;
     private static JDBCUserDAO instance;
     private static final String SELECT_PAGINATED_USERS = "SELECT * FROM users LIMIT ? OFFSET ?";
     private static final String SELECT_BY_ID = "SELECT * FROM users WHERE id = ?";
@@ -47,7 +44,6 @@ public class JDBCUserDAO implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        LOGGER.log(Level.INFO, "saved value : " + saved);
         return saved;
     }
 
