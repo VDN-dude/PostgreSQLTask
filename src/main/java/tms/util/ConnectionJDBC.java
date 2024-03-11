@@ -12,7 +12,10 @@ public class ConnectionJDBC {
     public static Connection getPostgresConnection(){
         Connection connection;
         try {
-             connection = DriverManager.getConnection("jdbc:postgresql://192.168.0.74:5432/postgres_task?escapeSyntaxCallMode=callIfNoReturn", "postgres", "!QAZxsw2#EDC");
+             connection = DriverManager.getConnection(
+                     "jdbc:postgresql://192.168.0.74:5432/postgres_task?escapeSyntaxCallMode=callIfNoReturn",
+                     "postgres",
+                     "!QAZxsw2#EDC");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +25,10 @@ public class ConnectionJDBC {
     public static Connection getPostgresConnection(int level){
         Connection connection;
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://192.168.0.74:5432/postgres_task?escapeSyntaxCallMode=callIfNoReturn", "postgres", "!QAZxsw2#EDC");
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://192.168.0.74:5432/postgres_task?escapeSyntaxCallMode=callIfNoReturn",
+                    "postgres",
+                    "!QAZxsw2#EDC");
             connection.setTransactionIsolation(level);
         } catch (SQLException e) {
             throw new RuntimeException(e);
