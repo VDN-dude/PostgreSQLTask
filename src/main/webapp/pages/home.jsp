@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -13,7 +14,7 @@
 <div class="container">
     <div class="container justify-content-center">
         <div class="row">
-            <c:if test="${pageableUserList.userList.isEmpty()}">
+            <c:if test="${!pageableUserList.userList.isEmpty()}">
                 <div class="row">
                     <div class="col-3 text-center">
                         <c:out value="Firstname"/>

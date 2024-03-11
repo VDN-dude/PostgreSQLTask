@@ -15,11 +15,11 @@ import java.util.Optional;
 @WebServlet("/")
 public class HomeServlet extends HttpServlet {
     private final UserService userService = UserServiceImpl.getInstance();
-    private int offset;
-    private int pageSize = 10;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String page = req.getParameter("page");
+        int offset;
+        int pageSize = 10;
         if (page == null || page.equals("0")){
             offset = 0;
         } else {
@@ -27,10 +27,7 @@ public class HomeServlet extends HttpServlet {
             offset = Integer.parseInt(page) * pageSize - pageSize;
         }
         Optional<PageableUser> pageableUser = userService.findAll(offset, pageSize);
-        if (pageableUser.isPresent()){
-            req.setAttribute("pageableUserList", pageableUser.get());
-            System.out.println(pageableUser.get().getCountOfPages());
-        }
+        pageableUser.ifPresent(user -> req.setAttribute("pageableUserList", user));
 
         req.getRequestDispatcher("/pages/home.jsp").forward(req, resp);
     }

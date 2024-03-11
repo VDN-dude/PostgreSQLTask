@@ -5,7 +5,6 @@
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" href="valid.css">
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -31,7 +30,7 @@
         <div class="row mb-3">
             <div class="col-3">
                 <label for="Age" class="form-label">Age</label>
-                <input name="age" type="number" class="form-control" value="${user.age}" id="Age" min="0" required>
+                <input name="age" type="number" class="form-control" value="${user.age}" id="Age" min="1" required>
             </div>
             <div class="col-9">
                 <label for="PhoneNumber" class="form-label">Phone number</label>

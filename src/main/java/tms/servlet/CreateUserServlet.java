@@ -1,6 +1,7 @@
 package tms.servlet;
 
 import tms.dto.RegUserDTO;
+import tms.service.UserService;
 import tms.service.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet("/create-user")
 public class CreateUserServlet extends HttpServlet {
-    private final UserServiceImpl service = UserServiceImpl.getInstance();
+    private final UserService service = UserServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

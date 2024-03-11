@@ -15,9 +15,7 @@ import java.util.Optional;
 
 @WebServlet("/modify-user")
 public class ModifyUserServlet extends HttpServlet {
-
     private final UserService userService = UserServiceImpl.getInstance();
-
     private User user;
 
     @Override

@@ -25,7 +25,7 @@
         <div class="row mb-3">
             <div class="col-3">
                 <label for="Age" class="form-label">Age</label>
-                <input name="age" type="number" class="form-control" id="Age" min="0" required>
+                <input name="age" type="number" class="form-control" id="Age" min="1" required>
             </div>
             <div class="col-9">
                 <label for="PhoneNumber" class="form-label">Phone number</label>
