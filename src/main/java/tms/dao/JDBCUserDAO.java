@@ -32,7 +32,7 @@ public class JDBCUserDAO implements UserDAO {
 
         boolean saved = false;
         try (Connection postgresConnection = ConnectionJDBC.getPostgresConnection(Connection.TRANSACTION_READ_COMMITTED);
-             CallableStatement callableStatement = postgresConnection.prepareCall("{?= CALL saveuser(?,?,?,?)}")) {
+             CallableStatement callableStatement = postgresConnection.prepareCall("{?= call saveuser(?,?,?,?)}")) {
 
             callableStatement.registerOutParameter(1, Types.BOOLEAN);
             callableStatement.setString(2, user.getFirstname());
